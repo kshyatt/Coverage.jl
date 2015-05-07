@@ -72,10 +72,11 @@ module Codecov
         commit = ENV["TRAVIS_COMMIT"]
         branch = ENV["TRAVIS_BRANCH"]
         travis = ENV["TRAVIS_JOB_ID"]
+        heads  = @compat Dict("Content-Type" => "application/json")
+        println(heads)
         r = Requests.post(
-                URI("https://codecov.io/upload/v1?&commit=$(commit)&branch=$(branch)&travis_job_id=$(travis)"),
-                headers = @compat Dict("Content-Type"=>"application/json"),
-                data = data)
+                URI("https://codecov.io/upload/v1?&commit=$(commit)&branch=$(branch)&travis_job_id=$(travis)");
+                headers = heads, data = data)
         dump(r.data)
     end
 
