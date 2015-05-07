@@ -76,8 +76,8 @@ module Codecov
         println(heads)
         r = Requests.post(
                 URI("https://codecov.io/upload/v1?&commit=$(commit)&branch=$(branch)&travis_job_id=$(travis)");
-                headers = heads, data = data)
-        dump(r.data)
+                data = data) #headers = heads, 
+        dump(r)
     end
 
 end  # module Codecov
