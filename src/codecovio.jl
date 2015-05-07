@@ -67,12 +67,15 @@ module Codecov
             cov[file[1]] = file[2]
         end
         data = @compat Dict("coverage" => cov)
+        println(data)
 
         commit = ENV["TRAVIS_COMMIT"]
         branch = ENV["TRAVIS_BRANCH"]
         travis = ENV["TRAVIS_JOB_ID"]
-        r = Requests.post(URI("https://codecov.io/upload/v1?&commit=$(commit)&branch=$(branch)&travis_job_id=$(travis)"),
-                files = [FileParam(JSON.json(data),"application/json","json_file","coverage.json")])
+        r = Requests.post(
+                URI("https://codecov.io/upload/v1?&commit=$(commit)&branch=$(branch)&travis_job_id=$(travis)"),
+                headers = @compat Dict("Content-Type"=>"application/json"),
+                data = data)
         dump(r.data)
     end
 
